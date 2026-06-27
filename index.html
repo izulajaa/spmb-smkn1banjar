@@ -487,7 +487,8 @@
   }
 
   function isUjicoba(val) {
-    return val.trim() === NISN_UJICOBA;
+    const v = val.trim();
+    return v === NISN_UJICOBA || v === NISN_UJICOBA.slice(-5);
   }
 
   function updateCountdown() {
