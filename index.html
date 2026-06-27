@@ -330,13 +330,11 @@
     animation: slideUp 0.4s ease;
   }
   .open-banner p { font-size: 14px; font-weight: 600; color: #86efac; }
-  .search-locked .search-input,
-  .search-locked .search-btn {
-    opacity: 0.4; pointer-events: none;
-  }
   .lock-notice {
     margin-top: 12px; font-size: 13px;
-    color: #f97316; font-weight: 500; text-align: center;
+    color: #dc2626; font-weight: 500; text-align: center;
+    background: #fef2f2; border: 1px solid #fecaca;
+    border-radius: var(--radius-md); padding: 10px 14px;
   }
 
   @media (max-width: 560px) {
@@ -528,42 +526,7 @@
         '</div>' +
       '</div>';
 
-    // Kunci search kecuali input NISN ujicoba
-    const currentVal = input.value.trim();
-    if (isUjicoba(currentVal)) {
-      searchCard.classList.remove('search-locked');
-      removeOrAddLockNotice(false);
-    } else {
-      searchCard.classList.add('search-locked');
-      removeOrAddLockNotice(true);
-    }
   }
-
-  function removeOrAddLockNotice(show) {
-    let notice = document.getElementById('lock-notice');
-    if (show && !notice) {
-      notice = document.createElement('p');
-      notice.id = 'lock-notice';
-      notice.className = 'lock-notice';
-      notice.textContent = '🔒 Pencarian akan aktif saat pengumuman dibuka.';
-      searchCard.appendChild(notice);
-    } else if (!show && notice) {
-      notice.remove();
-    }
-  }
-
-  // Pantau input — jika NISN ujicoba diketik, buka lock sementara
-  input.addEventListener('input', function() {
-    if (!isOpen()) {
-      if (isUjicoba(this.value)) {
-        searchCard.classList.remove('search-locked');
-        removeOrAddLockNotice(false);
-      } else {
-        searchCard.classList.add('search-locked');
-        removeOrAddLockNotice(true);
-      }
-    }
-  });
 
   // Jalankan countdown
   updateCountdown();
@@ -577,6 +540,7 @@
   async function cariPeserta() {
     // Blokir jika belum waktunya dan bukan NISN ujicoba
     if (!isOpen() && !isUjicoba(input.value)) {
+      area.innerHTML = '<div class="not-found"><div style="font-size:32px;margin-bottom:10px">🔒</div><div class="not-found-title">Pengumuman Belum Dibuka</div><div class="not-found-sub">Pengumuman kelulusan baru dapat diakses pada<br><strong>Senin, 29 Juni 2026 pukul 10.00 WITA</strong>.<br>Silakan kunjungi kembali sesuai jadwal.</div></div>';
       return;
     }
 
